@@ -1,4 +1,4 @@
-name: Windows - RustDesk
+name: Windows - RustDesk + Anydesk
 
 on:
   workflow_dispatch:
