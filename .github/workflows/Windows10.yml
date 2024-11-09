@@ -17,8 +17,10 @@ jobs:
           
       - name: Log In To AnyDesk
         run: cmd /c show.bat
+        
       - name: Starting Time
-       run: |
+        run: |
        Start-Sleep -Seconds 599950
+       
       - name: Time Counter
         run: python time.py
