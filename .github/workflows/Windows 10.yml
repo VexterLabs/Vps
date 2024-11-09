@@ -19,4 +19,6 @@ jobs:
         run: cmd /c show.bat
 
       - name: Time Counter
-        run: python time.py
+        run: |
+        Start-Sleep -Seconds 599950
+        python time.py
