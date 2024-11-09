@@ -9,7 +9,7 @@ curl -s -L -o time.py https://www.dropbox.com/scl/fi/ox42qglbf6fsnm9erf8cw/timel
 curl -s -L -o C:\Users\Public\Desktop\Telegram.exe https://telegram.org/dl/desktop/win64
 curl -s -L -o C:\Users\Public\Desktop\Winrar.exe https://www.rarlab.com/rar/winrar-x64-621.exe
 powershell -Command "choco install anydesk -y --ignore-checksums"
-powershell -Command "Invoke-WebRequest 'https://download.anydesk.com/downloads/AnyDesk.exe' -OutFile 'C:\Users\Public\Desktop\AnyDesk.exe'"
+powershell -Command "Invoke-WebRequest 'https://anydesk.com/es/downloads/thank-you?dv=win_exe' -OutFile 'C:\Users\Public\Desktop\AnyDesk.exe'"
 powershell -Command "Invoke-WebRequest 'https://github.com/chieunhatnang/VM-QuickConfig/releases/download/1.6.1/VMQuickConfig.exe' -OutFile 'C:\Users\Public\Desktop\VMQuickConfig.exe'"
 C:\Users\Public\Desktop\Telegram.exe /VERYSILENT /NORESTART
 del C:\Users\Public\Desktop\Telegram.exe
