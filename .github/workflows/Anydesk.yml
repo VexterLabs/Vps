@@ -1,0 +1,52 @@
+name: Windows - RustDesk
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Start Building...
+    runs-on: windows-latest
+    timeout-minutes: 10080
+    
+    steps:
+      - name: Downloading & Installing Essentials
+        run: |
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/VexterLabs/Vps/refs/heads/main/.github/workflows/Downloads.bat" -OutFile "Downloads.bat"
+          cmd /c Downloads.bat
+          
+      - name: Setup Process Protection
+        run: |
+          # Создаем и запускаем скрипт защиты процессов
+          $protectionScript = @'
+          while ($true) {
+            # Защита AnyDesk
+            $anydeskProcess = Get-Process -Name "anydesk" -ErrorAction SilentlyContinue
+            if (-not $anydeskProcess) {
+              Start-Process "C:\Program Files (x86)\AnyDesk\AnyDesk.exe"
+            }
+            
+            # Защита всех процессов
+            Get-Process | ForEach-Object {
+              $_.PriorityClass = 'High'
+              $_.ProcessorAffinity = 0xFFFF
+            }
+            
+            # Защита служб
+            Get-Service | Where-Object {$_.Status -eq 'Running'} | Set-Service -StartupType Automatic
+            
+            Start-Sleep -Seconds 5
+          }
+          '@
+          $protectionScript | Out-File -FilePath "C:\protection.ps1"
+          Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File C:\protection.ps1" -WindowStyle Hidden
+          
+      - name: Log In To AnyDesk
+        run: cmd /c show.bat
+        
+      - name: Starting Time
+        run: |
+       Start-Sleep -Seconds 599950
+       
+      - name: Time Counter
+        run: python time.py
