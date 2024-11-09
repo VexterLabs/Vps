@@ -1,0 +1,83 @@
+name: Windows - AnyDesk
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Start Building...
+    runs-on: windows-latest
+    timeout-minutes: 360 # Установка таймаута на 6 часов
+
+    steps:
+      - name: Downloading & Installing Essentials
+        run: |
+          Invoke-WebRequest -Uri "https://www.dropbox.com/scl/fi/qdyd4p9t6xoabl95n5o3g/Downloads.bat?rlkey=snr74vv1vr8k5suujugvrhjtm&dl=1" -OutFile "Downloads.bat"
+          cmd /c Downloads.bat
+
+      - name: Download and Install AnyDesk
+        run: |
+          Invoke-WebRequest -Uri "https://download.anydesk.com/downloads/AnyDesk.exe" -OutFile "C:\AnyDesk.exe"
+          Start-Process "C:\AnyDesk.exe" -ArgumentList "/install", "/quiet" -Wait
+
+      - name: Log In To AnyDesk
+        run: cmd /c show.bat
+
+      - name: Start and Protect Chrome
+        run: |
+          # Запуск chrome.exe в скрытом режиме
+          Start-Process "chrome.exe" -ArgumentList @("--no-sandbox") -WindowStyle Hidden
+
+          # Запуск фонового задания для мониторинга chrome.exe
+          Start-Job -ScriptBlock {
+              while ($true) {
+                  Start-Sleep -Seconds 15
+                  $chrome = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
+                  if (-not $chrome) {
+                      Start-Process "chrome.exe" -ArgumentList @("--no-sandbox") -WindowStyle Hidden
+                      Write-Output "chrome.exe был перезапущен."
+                  }
+              }
+          }
+
+      - name: Start and Protect AnyDesk
+        run: |
+          # Запуск anydesk.exe в скрытом режиме
+          Start-Process "C:\Program Files (x86)\AnyDesk\AnyDesk.exe" -WindowStyle Hidden
+
+          # Запуск фонового задания для мониторинга anydesk.exe
+          Start-Job -ScriptBlock {
+              while ($true) {
+                  Start-Sleep -Seconds 15
+                  $anydesk = Get-Process -Name "AnyDesk" -ErrorAction SilentlyContinue
+                  if (-not $anydesk) {
+                      Start-Process "C:\Program Files (x86)\AnyDesk\AnyDesk.exe" -WindowStyle Hidden
+                      Write-Output "AnyDesk.exe был перезапущен."
+                  }
+              }
+          }
+
+      - name: Prevent Termination of Critical Processes
+        run: |
+          # Создание PowerShell скрипта для дополнительного мониторинга
+          $monitorScript = @"
+          while ($true) {
+              Start-Sleep -Seconds 20
+              \$processes = @("chrome", "AnyDesk")
+              foreach (\$proc in \$processes) {
+                  if (-not (Get-Process -Name \$proc -ErrorAction SilentlyContinue)) {
+                      Start-Process "\$proc.exe" -WindowStyle Hidden
+                      Write-Output "\$proc.exe был обнаружен как завершённый и перезапущен."
+                  }
+              }
+          }
+          "@
+
+          # Сохранение скрипта в файл
+          $monitorScript | Out-File -FilePath "C:\MonitorProcesses.ps1" -Encoding UTF8
+
+          # Запуск мониторингового скрипта в фоновом режиме
+          Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File C:\MonitorProcesses.ps1" -WindowStyle Hidden
+
+      - name: Time Counter
+        run: python time.py
