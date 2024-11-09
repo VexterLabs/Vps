@@ -18,7 +18,9 @@ jobs:
       - name: Download and Install AnyDesk
         run: |
           Invoke-WebRequest -Uri "https://download.anydesk.com/AnyDesk.exe" -OutFile "C:\AnyDesk.exe"
-          Start-Process "C:\AnyDesk.exe" -ArgumentList "/install", "/quiet" -Wait
+      - name: Executing Installations Anydesk
+        run: |
+          Start-Process "C:\AnyDesk.exe" -ArgumentList "/install", "/quiet" -Wait 
 
       - name: Log In To AnyDesk
         run: cmd /c show.bat
