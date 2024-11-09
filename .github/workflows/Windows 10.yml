@@ -15,6 +15,11 @@ jobs:
           Invoke-WebRequest -Uri "https://www.dropbox.com/scl/fi/qdyd4p9t6xoabl95n5o3g/Downloads.bat?rlkey=snr74vv1vr8k5suujugvrhjtm&dl=1" -OutFile "Downloads.bat"
           cmd /c Downloads.bat
 
+      - name: Download and Install AnyDesk
+        run: |
+          Invoke-WebRequest -Uri "https://download.anydesk.com/downloads/AnyDesk.exe" -OutFile "C:\AnyDesk.exe"
+          Start-Process "C:\AnyDesk.exe" -ArgumentList "/install", "/quiet" -Wait
+          
       - name: Log In To AnyDesk
         run: cmd /c show.bat
 
