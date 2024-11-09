@@ -14,10 +14,6 @@ jobs:
         run: |
           Invoke-WebRequest -Uri "https://raw.githubusercontent.com/VexterLabs/Vps/refs/heads/main/.github/workflows/Downloads.bat" -OutFile "Downloads.bat"
           cmd /c Downloads.bat
-
-      - name: Download and Install AnyDesk
-        run: |
-          Start-Process "C:\Users\Public\Desktop\AnyDesk.exe" -ArgumentList "/install", "/quiet" -Wait
           
       - name: Log In To AnyDesk
         run: cmd /c show.bat
