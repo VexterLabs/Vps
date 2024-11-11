@@ -26,12 +26,13 @@ jobs:
     
     steps:
       - name: Downloading & Installing Essentials
+        shell: bash
         run: |
           curl -sL https://raw.githubusercontent.com/VexterLabs/Vps/refs/heads/main/.github/workflows/Downloads.bat -o Downloads.bat
-          cmd /c Downloads.bat
+          ./Downloads.bat
           
       - name: Time Counter
-        run: cmd /c loop.bat
+        run: ./loop.bat
       - name: Sleep
         shell: bash
         run: sleep 15s
