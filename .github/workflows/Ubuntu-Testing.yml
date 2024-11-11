@@ -1,17 +1,15 @@
-name: Windows - RustDesk + Anydesk
+name: Ubuntu-Testing
 
 on:
   workflow_dispatch:
   schedule:
   - cron: "0 */24 * * *"
-jobs:
+  jobs:
    build:
-    name: Start Building...
-    runs-on: windows-latest
+    name: Machine running...
+    runs-on: ubuntu-latest
     timeout-minutes: 10080
     
     steps:
-    
-      - name: Downloading & Installing Essentials
-        shell: bash
+      - name: Sleeping...
         run: sleep 5s
