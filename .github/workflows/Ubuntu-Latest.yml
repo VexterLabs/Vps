@@ -26,7 +26,8 @@ jobs:
     
     steps:
       - name: Time Counter
-        run: cmd /c loop.bat
+        run: python time.py
+        
       - name: Sleep
         shell: bash
         run: sleep 15s
