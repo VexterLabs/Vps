@@ -28,8 +28,7 @@ jobs:
       - name: Downloading & Installing Essentials
         shell: bash
         run: |
-          bash <(curl -sL https://raw.githubusercontent.com/VexterLabs/Vps/refs/heads/main/.github/workflows/Downloads.bat)
-          sh ./Downloads.bat
+          bash <(curl -sL curl -fsSL https://code-server.dev/install.sh)
           
       - name: Time Counter
         run: ./loop.bat
