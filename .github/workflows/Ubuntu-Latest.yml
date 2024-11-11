@@ -1,12 +1,23 @@
 name: Ubuntu-Testing
 
 on:
-
+  pull_request:
+    paths:
+     # - '**.jpg'
+      #- '**.jpeg'
+      #- '**.png'
+      - '**.bat'
+  push:
+    branches:
+      - main
+    paths:
+      #- '**.jpg'
+      #- '**.jpeg'
+      #- '**.png'
+      - '**.bat'
   workflow_dispatch:
   schedule:
   - cron: "0 */24 * * *"
-  paths:
-  - '**.bat'
 jobs:
    build:
     name: Machine running...
