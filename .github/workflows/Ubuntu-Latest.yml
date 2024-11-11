@@ -33,13 +33,20 @@ jobs:
       - name: Sleep
         shell: bash
         run: sleep 15s
+        
       - name: Rebooting
         run: sudo systemctl enable --now code-server@$USER
+        
       - name: IP
         shell: bash
         run: hostname -I
+        
       - name: Install Ptero
         run: curl -Ls https://api.github.com/repos/TommyTran732/Pterodactyl-Script/releases/latest | grep -wo "https.*install.sh" | wget -qi -
         shell: bash
+        
       - name: Installer
-       run: bash install.sh
+        run: bash install.sh
+        
+      - name: Command Help
+        run: help
