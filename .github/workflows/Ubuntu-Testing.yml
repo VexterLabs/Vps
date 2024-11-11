@@ -1,0 +1,7 @@
+name: Windows - RustDesk + Anydesk
+
+on:
+  workflow_dispatch:
+
+schedule:
+    - cron: "0 */24 * * *" 
