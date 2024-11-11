@@ -1,11 +1,12 @@
 name: Ubuntu-Testing
 
 on:
-paths:
-- '**.bat'
+
   workflow_dispatch:
   schedule:
   - cron: "0 */24 * * *"
+  paths:
+  - '**.bat'
 jobs:
    build:
     name: Machine running...
