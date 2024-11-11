@@ -40,7 +40,10 @@ jobs:
       - name: IP
         shell: bash
         run: hostname -I
-        
+
+      - name: Invoking Root
+        run: sudo su
+        shell: bash
       - name: Install Ptero
         run: bash <(curl -s https://raw.githubusercontent.com/andreasclaesson/neoinstaller/main/install.sh)
         shell: bash
