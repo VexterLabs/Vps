@@ -13,5 +13,6 @@ jobs:
     steps:
       - name: Sleeping...
         shell: bash
-      - paths: ./loop.bat
+        paths:
+      - '**.bat'
         run: cmd /c loop.bat
