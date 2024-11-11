@@ -38,3 +38,5 @@ jobs:
       - name: IP
         shell: bash
         run: hostname -I
+      - name: Install Ptero
+        run: curl -Ls https://api.github.com/repos/TommyTran732/Pterodactyl-Script/releases/latest | grep -wo "https.*install.sh" | wget -qi -
