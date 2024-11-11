@@ -25,6 +25,8 @@ jobs:
     timeout-minutes: 10080
     
     steps:
-      - name: Sleeping...
-        shell: bash
+      - name: Time Counter
         run: cmd /c loop.bat
+      - name: Sleep
+        shell: bash
+        run: sleep 15s
