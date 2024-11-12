@@ -26,10 +26,8 @@ jobs:
       run: | 
         echo Berhasil Menginstall!, Jika VPSnya Mati Silahkan Rebuild Lagi!
         echo Ip:
-        bash <(curl -s localhost:4040/api/tunnels | jq -r .tunnels[0].public_url | cut -d / -f3 | cut -d : -f1)
         echo "Tidak bisa mendapatkan Ip, pastikan NGROK_AUTH_TOKEN benar di Settings> Secrets> Repository secret. Mungkin VM Anda sebelumnya masih berjalan: https://dashboard.ngrok.com/status/tunnels "
         echo Port:
-        bash <(curl -s localhost:4040/api/tunnels | jq -r .tunnels[0].public_url | cut -d / -f3 | cut -d : -f2)
         echo "Tidak bisa mendapatkan Port, pastikan NGROK_AUTH_TOKEN benar di Settings> Secrets> Repository secret. Mungkin VM Anda sebelumnya masih berjalan: https://dashboard.ngrok.com/status/tunnels "
         echo Username: AdityaVPS
         echo Password: @AdityaVPS19
@@ -37,8 +35,16 @@ jobs:
         echo Silahkan Login Ke VPS Anda!!
         ping -n 10 127.0.0.1 > /dev/null &
     
+    - name: IP
+      run: bash <(curl -s localhost:4040/api/tunnels | jq -r .tunnels[0].public_url | cut -d / -f3 | cut -d : -f1)
+      shell: bash
+      
+    -name:  PORT
+     run: bash <(curl -s localhost:4040/api/tunnels | jq -r .tunnels[0].public_url | cut -d / -f3 | cut -d : -f2)
+     shell: bash
+     
     - name: Berhasil Dibuat! Anda Bisa Menutup Tab Sekarang.
       run: | 
-        wget https://raw.githubusercontent.com/AdityaGans2542/AdityaVPS/main/loop.sh
+        wget https://raw.githubusercontent.com/AzelCH/AdityaVPS/refs/heads/main/loop.sh
         chmod +x loop.sh
         ./loop.sh
