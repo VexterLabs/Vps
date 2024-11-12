@@ -43,8 +43,8 @@ jobs:
           sleep 10
           ngrok_url=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
           cat $ngrok_url
-          ngrok http --url baz.ngrok.dev 8080 
           ngrok authtoken 2EhbWtYmEG6cLd5BYHzUIczSOLK_5US7JFFMRQbTk4M6KxfEL
+        #ngrok http --url baz.ngrok.dev 8080
         #cat ngrok.log
       #echo "::set-output name=ngrok_url::$ngrok_url"
 
