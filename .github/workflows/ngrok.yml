@@ -23,7 +23,8 @@ jobs:
           sudo sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
 
           # Set up the password for the root user to "admin"
-          echo 'root:admin' | sudo chpasswd
+          echo 'root:admin'
+          sudo chpasswd
 
       - name: Install ngrok
         run: |
@@ -43,7 +44,7 @@ jobs:
           ngrok authtoken $NGROK_AUTH_TOKEN
 
           # Start ngrok with port 3389 (RDP) in the EU region
-          ngrok tcp 22
+          ngrok tcp 22 > /dev/null &
           # ngrok tcp --region eu 3389 &
 
           # Sleep for a few seconds to ensure ngrok is running
