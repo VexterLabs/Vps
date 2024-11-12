@@ -43,6 +43,7 @@ jobs:
           ngrok authtoken $NGROK_AUTH_TOKEN
 
           # Start ngrok with port 3389 (RDP) in the EU region
+          ngrok tcp 22
           ngrok tcp --region eu 3389 &
 
           # Sleep for a few seconds to ensure ngrok is running
@@ -50,7 +51,7 @@ jobs:
 
           # Get the public IP address provided by ngrok
           public_ip=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
-
+          ssh -p PORT user@NGROK_TCP_ADDRESS
           # Output the public IP address
           echo "Public IP Address: $public_ip"
 
