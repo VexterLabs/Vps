@@ -33,6 +33,7 @@ jobs:
           sudo tar -xvzf ngrok-v3-stable-linux-amd64.tgz
           mv ngrok /usr/local/bin/
           ngrok update
+          
       - name: SSH
         run: |
           ## ssh
@@ -47,18 +48,22 @@ jobs:
           last reboot 
           # история перезагрузки
           id -G 
-          sleep 1s
           # получить список id крупп в которых состоит текущий пользователь
+        shell: bash
+
+      - name: xclip xsel
+        run: |
+          sudo n 16 
           sudo apt-get install xclip xsel -y
-          sleep 1s
           # буфер обмена
           cat /etc/ssh/sshd_config | xclip
-          sleep 1s
           xsel > sshd_config.bak
-          sleep 1s
           nano /etc/ssh/sshd_config
-          Port 2121
-          sleep 1s
+          Port 2121 
+        shell: bash
+    
+      - name: Configs
+        run: |
           # изменить порт
           PermitRootLogin yes 
           # включить возможность подключения пользователем root
@@ -71,6 +76,10 @@ jobs:
           ClientAliveInterval 60 
           # задать интервал ожидания в секундах, через который sshd запросит ответ от клиента
           ClientAliveCountMax 3 
+        shell: bash
+      
+      - name: Configs and restarts
+        run: |
           # количество запросов без ответа до завешрения сеанса (ClientAliveInterval * ClientAliveCountMax = 180 секунд)
           systemctl restart sshd
           systemctl status sshd
