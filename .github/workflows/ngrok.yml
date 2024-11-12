@@ -46,9 +46,9 @@ jobs:
           cat ngrok.log
       #echo "::set-output name=ngrok_url::$ngrok_url"
 
-      - name: URL
-        run: | 
-          echo "${{ ngrok_url }}"
+      #- name: URL
+       # run: | 
+        #  echo "${{ ngrok_url }}"
       
       - name: Keep Alive
         run: |
