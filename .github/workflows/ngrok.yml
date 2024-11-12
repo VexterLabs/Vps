@@ -48,7 +48,7 @@ jobs:
           # история перезагрузки
           id -G 
           # получить список id крупп в которых состоит текущий пользователь
-          #apt-get install xclip xsel 
+          sudo apt-get install xclip xsel -y
           # буфер обмена
           cat /etc/ssh/sshd_config | xclip
           xsel > sshd_config.bak
