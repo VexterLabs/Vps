@@ -33,6 +33,8 @@ jobs:
           sudo tar -xvzf ngrok-v3-stable-linux-amd64.tgz
           mv ngrok /usr/local/bin/
           ngrok update
+      - name: SSH
+        run: |
           ## ssh
           w 
           # отобразить активные сессии и их активность (время/дата входа, IDLE время простоя и последняя выполняемая команда)
@@ -67,10 +69,18 @@ jobs:
           # количество запросов без ответа до завешрения сеанса (ClientAliveInterval * ClientAliveCountMax = 180 секунд)
           systemctl restart sshd
           systemctl status sshd
+        shell: bash
+          
+      - name: x11
+        run: |
           ### x11
           apt-get install virt-manager ssh-askpass
           virt-manager
           export DISPLAY=username-VirtualBox:10.0 && firefox
+        shell: bash
+          
+      - name: scp
+        run: |
           ### scp
           ssh-copy-id root@192.168.3.105 -p 2121 
           # скопировать публичный ключ на удаленный сервер (добавить новой строкой), утилита будет искать в директории текущего локального пользователя файл публичного ключа и скопирует содержимое файла ключа ~/.ssh/id_rsa.pub указанному при подключение пользователю на удаленный компьютер в файл authorized_keys
@@ -78,6 +88,10 @@ jobs:
           # скопировать содержимое каталога files на удаленный компьютер в директорию downaload
           scp -P 2121 -r kup@192.168.3.105:/home/lifailon/downaload /home/lifailon/files/ 
           # скачать (-r) данные с удаленного сервера на локальный
+        shell: bash
+        
+      - name: sshpass
+        run: |
           ### sshpass
           hosts=(192.168.3.101 192.168.3.102 192.168.3.103 192.168.3.104)
           username="lifailon"
@@ -87,6 +101,7 @@ jobs:
           for host in ${hosts[@]}; do
           sshpass -p $password ssh -p $port $username@$host "echo $(uname -n) $(free -m | grep Mem: | awk '{print $3"/"$2}')"
           done
+        shell: bash
         #chmod +x ngrok
           
           
