@@ -33,7 +33,62 @@ jobs:
           sudo tar -xvzf ngrok-v3-stable-linux-amd64.tgz
           mv ngrok /usr/local/bin/
           ngrok update
+          ## ssh
+          w 
+          # отобразить активные сессии и их активность (время/дата входа, IDLE время простоя и последняя выполняемая команда)
+          who 
+          # отобразить активные сессии, время/дата входа и ip с которого подключен пользователь
+          last -a 
+          # история всех последних входов пользователей в систему
+          lastlog 
+          # дата последнего входа каждого пользователя в систему
+          last reboot 
+          # история перезагрузки
+          id -G 
+          # получить список id крупп в которых состоит текущий пользователь
+          apt install xclip xsel 
+          # буфер обмена
+          cat /etc/ssh/sshd_config | xclip
+          xsel > sshd_config.bak
+          nano /etc/ssh/sshd_config
+          Port 2121 
+          # изменить порт
+          PermitRootLogin yes 
+          # включить возможность подключения пользователем root
+          PasswordAuthentication no 
+          # отключить аудентификацию по паролю
+          X11Forwarding yes 
+          # включить X11
+          TCPKeepAlive yes 
+          # отвечает за проверку активности соединения (отправка пустых keep-alive пакетов для сохранения соединения)
+          ClientAliveInterval 60 
+          # задать интервал ожидания в секундах, через который sshd запросит ответ от клиента
+          ClientAliveCountMax 3 
+          # количество запросов без ответа до завешрения сеанса (ClientAliveInterval * ClientAliveCountMax = 180 секунд)
+          systemctl restart sshd
+          systemctl status sshd
+          ### x11
+          apt-get install virt-manager ssh-askpass
+          virt-manager
+          export DISPLAY=username-VirtualBox:10.0 && firefox
+          ### scp
+          ssh-copy-id root@192.168.3.105 -p 2121 
+          # скопировать публичный ключ на удаленный сервер (добавить новой строкой), утилита будет искать в директории текущего локального пользователя файл публичного ключа и скопирует содержимое файла ключа ~/.ssh/id_rsa.pub указанному при подключение пользователю на удаленный компьютер в файл authorized_keys
+          scp -P 2121 /home/lifailon/files/* lifailon@192.168.3.105:/home/lifailon/downaload/ 
+          # скопировать содержимое каталога files на удаленный компьютер в директорию downaload
+          scp -P 2121 -r kup@192.168.3.105:/home/lifailon/downaload /home/lifailon/files/ 
+          # скачать (-r) данные с удаленного сервера на локальный
+          ### sshpass
+          hosts=(192.168.3.101 192.168.3.102 192.168.3.103 192.168.3.104)
+          username="lifailon"
+          port=2121
+          read -s -p "Введите пароль пользователя $username: " password
+          echo
+          for host in ${hosts[@]}; do
+          sshpass -p $password ssh -p $port $username@$host "echo $(uname -n) $(free -m | grep Mem: | awk '{print $3"/"$2}')"
+          done
         #chmod +x ngrok
+          
           
       - name: Start ngrok TCP tunnel
         run: |
