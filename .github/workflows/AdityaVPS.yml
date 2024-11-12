@@ -14,7 +14,7 @@ jobs:
     - name: Connect Ke Akun Ngrok.
       run: ./ngrok authtoken $NGROK_AUTH_TOKEN
       env:
-        NGROK_AUTH_TOKEN: 2EhbWtYmEG6cLd5BYHzUIczSOLK_5US7JFFMRQbTk4M6KxfEL
+        NGROK_AUTH_TOKEN: $NGROK_SERVICE_GITHUB
         
     - name: Menghidupkan Access User Root.
       run: sudo useradd -m AdityaVPS &> /dev/null && sudo adduser AdityaVPS sudo &> /dev/null && echo 'AdityaVPS:@AdityaVPS19' | sudo chpasswd && sudo sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd && sudo usermod -aG sudo AdityaVPS && sudo hostname AdityaVPS
