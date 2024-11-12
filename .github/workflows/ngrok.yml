@@ -53,7 +53,7 @@ jobs:
 
           # Get the public IP address provided by ngrok
           public_ip=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
-          ssh -p 13859 user@NGROK_TCP_ADDRESS
+          ssh -p 13859 user@$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
           NGROK_TCP_ADDRESS=$publlic_ip
           # Output the public IP address
           echo "Public IP Address: $public_ip"
