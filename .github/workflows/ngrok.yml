@@ -30,10 +30,10 @@ jobs:
           # Download ngrok
           wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
           sudo tar -xvzf ngrok-v3-stable-linux-amd64.tgz
-          chmod +x ngrok
           mv ngrok /usr/local/bin/
           ngrok update
-
+        #chmod +x ngrok
+          
       - name: Start ngrok TCP tunnel
         run: |
           # Retrieve the ngrok authtoken from GitHub secrets
