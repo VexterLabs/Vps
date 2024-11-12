@@ -45,7 +45,7 @@ jobs:
 
           # Start ngrok with port 3389 (RDP) in the EU region
           ngrok tcp 22 > /dev/null &
-          ngrok tcp 22 --cidr-allow ALLOWED_IP_ADDRESS_CIDR
+          # ngrok tcp 22 --cidr-allow ALLOWED_IP_ADDRESS_CIDR
           # ngrok tcp --region eu 3389 &
 
           # Sleep for a few seconds to ensure ngrok is running
