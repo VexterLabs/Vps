@@ -44,7 +44,7 @@ jobs:
 
           # Start ngrok with port 3389 (RDP) in the EU region
           ngrok tcp 22
-          ngrok tcp --region eu 3389 &
+          # ngrok tcp --region eu 3389 &
 
           # Sleep for a few seconds to ensure ngrok is running
           sleep 5
@@ -60,5 +60,5 @@ jobs:
           # Add a long-running command to keep the workflow alive
           while true; do
             echo "Workflow is running..."
-            sleep 5184000  # Sleep for 1 hour
+            sleep 360h  # Sleep for 360 hour
           done
