@@ -22,9 +22,9 @@ jobs:
       run: | 
         echo Berhasil Menginstall!, Jika VPSnya Mati Silahkan Rebuild Lagi!
         echo Ip:
-        curl -s localhost:4040/api/tunnels | jq -r .tunnels[0].public_url | cut -d / -f3 | cut -d : -f1 || echo "Tidak bisa mendapatkan Ip, pastikan NGROK_AUTH_TOKEN benar di Settings> Secrets> Repository secret. Mungkin VM Anda sebelumnya masih berjalan: https://dashboard.ngrok.com/status/tunnels "
+        bash <(curl -s localhost:4040/api/tunnels | jq -r .tunnels[0].public_url | cut -d / -f3 | cut -d : -f1 || echo "Tidak bisa mendapatkan Ip, pastikan NGROK_AUTH_TOKEN benar di Settings> Secrets> Repository secret. Mungkin VM Anda sebelumnya masih berjalan: https://dashboard.ngrok.com/status/tunnels ")
         echo Port:
-        curl -s localhost:4040/api/tunnels | jq -r .tunnels[0].public_url | cut -d / -f3 | cut -d : -f2 || echo "Tidak bisa mendapatkan Port, pastikan NGROK_AUTH_TOKEN benar di Settings> Secrets> Repository secret. Mungkin VM Anda sebelumnya masih berjalan: https://dashboard.ngrok.com/status/tunnels "
+        bash <(curl -s localhost:4040/api/tunnels | jq -r .tunnels[0].public_url | cut -d / -f3 | cut -d : -f2 || echo "Tidak bisa mendapatkan Port, pastikan NGROK_AUTH_TOKEN benar di Settings> Secrets> Repository secret. Mungkin VM Anda sebelumnya masih berjalan: https://dashboard.ngrok.com/status/tunnels ")
         echo Username: AdityaVPS
         echo Password: @AdityaVPS19
         echo Sudo Password: @AdityaVPS19
