@@ -53,9 +53,10 @@ jobs:
 
       - name: xclip xsel
         run: |
-          sudo n 16 
+          sudo n 20
           sudo apt-get install xclip xsel -y
           # буфер обмена
+          cat ~/.ssh/id_rsa.pub
           cat /etc/ssh/sshd_config | xclip
           xsel > sshd_config.bak
           nano /etc/ssh/sshd_config
