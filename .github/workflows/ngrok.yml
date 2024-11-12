@@ -47,13 +47,18 @@ jobs:
           last reboot 
           # история перезагрузки
           id -G 
+          sleep 1s
           # получить список id крупп в которых состоит текущий пользователь
           sudo apt-get install xclip xsel -y
+          sleep 1s
           # буфер обмена
           cat /etc/ssh/sshd_config | xclip
+          sleep 1s
           xsel > sshd_config.bak
+          sleep 1s
           nano /etc/ssh/sshd_config
-          Port 2121 
+          Port 2121
+          sleep 1s
           # изменить порт
           PermitRootLogin yes 
           # включить возможность подключения пользователем root
