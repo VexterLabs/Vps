@@ -32,6 +32,7 @@ jobs:
           unzip ngrok-stable-linux-amd64.zip
           chmod +x ngrok
           mv ngrok /usr/local/bin/
+          ngrok update
 
       - name: Start ngrok TCP tunnel
         run: |
