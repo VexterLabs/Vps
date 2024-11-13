@@ -1,153 +1,42 @@
-name: Ubuntu Setup Workflow
+# This is a basic workflow to help you get started with Actions
 
+name: CI
+
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # This workflow contains a single job called "build"
   build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-      - name: Install xrdp and configure for root
+      # Runs a set of commands using the runners shell
+      - name: NETFLEX DEBIAN NOVNC
         run: |
-          # Install xrdp
-          sudo apt-get update
-          sudo apt-get install -y xrdp
+         sudo apt update
+          sudo apt -y install novnc websockify python2 pip
+          pip install numpy
 
-          # Configure xrdp to use the root user
-          sudo sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
-
-          # Set up the password for the root user to "admin"
-          echo 'root:admin'
-          sudo chpasswd
-
-      - name: Install ngrok
-        run: |
-          # Download ngrok
-          wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
-          sudo tar -xvzf ngrok-v3-stable-linux-amd64.tgz
-          mv ngrok /usr/local/bin/
-          ngrok update
-          
-      - name: SSH
-        run: |
-          ## ssh
-          w 
-          # отобразить активные сессии и их активность (время/дата входа, IDLE время простоя и последняя выполняемая команда)
-          who 
-          # отобразить активные сессии, время/дата входа и ip с которого подключен пользователь
-          last -a 
-          # история всех последних входов пользователей в систему
-          lastlog 
-          # дата последнего входа каждого пользователя в систему
-          last reboot 
-          # история перезагрузки
-          id -G 
-          # получить список id крупп в которых состоит текущий пользователь
-        shell: bash
-
-      - name: xclip xsel
-        run: |
-          sudo n 20 
-          sudo apt-get install xclip xsel -y
-          # буфер обмена
-          ssh-keygen -b 2048 -t rsa  -f ~/.ssh/id_rsa -q -N ""
-          cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
-          cat /etc/ssh/sshd_config | xclip
-          xsel > sshd_config.bak
-          nano /etc/ssh/sshd_config
-          Port 2121 
-        shell: bash
-    
-      - name: Configs
-        run: |
-          # изменить порт
-          PermitRootLogin yes 
-          # включить возможность подключения пользователем root
-          PasswordAuthentication no 
-          # отключить аудентификацию по паролю
-          X11Forwarding yes 
-          # включить X11
-          TCPKeepAlive yes 
-          # отвечает за проверку активности соединения (отправка пустых keep-alive пакетов для сохранения соединения)
-          ClientAliveInterval 60 
-          # задать интервал ожидания в секундах, через который sshd запросит ответ от клиента
-          ClientAliveCountMax 3 
-        shell: bash
-      
-      - name: Configs and restarts
-        run: |
-          # количество запросов без ответа до завешрения сеанса (ClientAliveInterval * ClientAliveCountMax = 180 секунд)
-          systemctl restart sshd
-          systemctl status sshd
-        shell: bash
-          
-      - name: x11
-        run: |
-          ### x11
-          apt-get install virt-manager ssh-askpass
-          virt-manager
-          export DISPLAY=username-VirtualBox:10.0 && firefox
-        shell: bash
-          
-      - name: scp
-        run: |
-          ### scp
-          ssh-copy-id root@192.168.3.105 -p 2121 
-          # скопировать публичный ключ на удаленный сервер (добавить новой строкой), утилита будет искать в директории текущего локального пользователя файл публичного ключа и скопирует содержимое файла ключа ~/.ssh/id_rsa.pub указанному при подключение пользователю на удаленный компьютер в файл authorized_keys
-          scp -P 2121 /home/lifailon/files/* lifailon@192.168.3.105:/home/lifailon/downaload/ 
-          # скопировать содержимое каталога files на удаленный компьютер в директорию downaload
-          scp -P 2121 -r kup@192.168.3.105:/home/lifailon/downaload /home/lifailon/files/ 
-          # скачать (-r) данные с удаленного сервера на локальный
-        shell: bash
-        
-      - name: sshpass
-        run: |
-          ### sshpass
-          hosts=(192.168.3.101 192.168.3.102 192.168.3.103 192.168.3.104)
-          username="lifailon"
-          port=2121
-          read -s -p "Введите пароль пользователя $username: " password
-          echo
-          for host in ${hosts[@]}; do
-          sshpass -p $password ssh -p $port $username@$host "echo $(uname -n) $(free -m | grep Mem: | awk '{print $3"/"$2}')"
-          done
-        shell: bash
-        #chmod +x ngrok
-          
-          
-      - name: Start ngrok TCP tunnel
-        run: |
-          # Retrieve the ngrok authtoken from GitHub secrets
-          NGROK_AUTH_TOKEN=${{ secrets.NGROK_AUTH_TOKEN }}
-
-          # Authenticate ngrok using the authtoken
-          ngrok authtoken $NGROK_AUTH_TOKEN
-
-          # Start ngrok with port 3389 (RDP) in the EU region
-          ngrok tcp 22 > /dev/null &
-          # ngrok tcp 22 --cidr-allow ALLOWED_IP_ADDRESS_CIDR
-          # ngrok tcp --region eu 3389 &
-
-          # Sleep for a few seconds to ensure ngrok is running
-          sleep 5
-
-          # Get the public IP address provided by ngrok
-          public_ip=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
-          ssh -p 13859 user@$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
-          NGROK_TCP_ADDRESS=$publlic_ip
-          # Output the public IP address
-          echo "Public IP Address: $public_ip"
-
-      - name: Keep Alive
-        run: |
-          # Add a long-running command to keep the workflow alive
-          while true; do
-            echo "Workflow is running..."
-            sleep 360h  # Sleep for 360 hour
-          done
+          sudo websockify -D --web=/usr/share/novnc/ --cert=/etc/ssl/novnc.pem 6080 localhost:5901
+          sudo apt-get install qemu-kvm qemu virt-manager virt-viewer libvirt-bin
+          wget -q https://mirror.accum.se/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso
+          sudo qemu-img create -f qcow2 deb.img 20G
+          sudo qemu-system-x86_64 -hda deb.img -cdrom debian-11.6.0-amd64-netinst.iso -m 4068 -vnc 127.0.0.0:5901 > /dev/null 2>&1
+          npm install ngrok -g
+          ngrok authtoken 2NQMSMDd5Jp7jZ93Mb3gCUjE9Ud_kQGqRMGUjrcZjbDuWiv9
+          ngrok http 6080 -region ap
