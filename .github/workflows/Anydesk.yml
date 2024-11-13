@@ -46,7 +46,7 @@ jobs:
         run: cmd /c show.bat   
         
       - name: Sleep
-        run: sleep 360h
+        run: sleep 1d
       
       - name: Time Counter
         run: python time.py
