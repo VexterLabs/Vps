@@ -43,14 +43,17 @@ jobs:
           Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File C:\protection.ps1" -WindowStyle Hidden
           
       - name: Log In To AnyDesk
-        run: cmd /c show.bat
+        run: cmd /c show.bat   
         
+      - name: Sleep
+        run: sleep 360h
+      
       - name: Time Counter
         run: python time.py
         
-      - name: Starting Time
-        run: Start-Sleep -Seconds 599950
+  #    - name: Starting Time
+  #     run: Start-Sleep -Seconds 599950
        
-      - name: Starting Time
-        run: Start-Sleep -Seconds 599950
+ #     - name: Starting Time
+#        run: Start-Sleep -Seconds 599950
        
