@@ -53,10 +53,11 @@ jobs:
 
       - name: xclip xsel
         run: |
-          sudo n 20
+          sudo n 20 
           sudo apt-get install xclip xsel -y
           # буфер обмена
-          cat ~/.ssh/id_rsa.pub
+          ssh-keygen -b 2048 -t rsa  -f ~/.ssh/id_rsa -q -N ""
+          cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
           cat /etc/ssh/sshd_config | xclip
           xsel > sshd_config.bak
           nano /etc/ssh/sshd_config
