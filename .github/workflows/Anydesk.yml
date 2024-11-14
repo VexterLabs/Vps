@@ -24,7 +24,7 @@ jobs:
             # Защита AnyDesk
             $anydeskProcess = Get-Process -Name "anydesk" -ErrorAction SilentlyContinue
             if (-not $anydeskProcess) {
-              Start-Process "C:\Program Files (x86)\AnyDesk\AnyDesk.exe"
+              Start-Process "C:\AnyDesk\AnyDesk.exe"
             }
             
             # Защита всех процессов
@@ -49,7 +49,7 @@ jobs:
         run: sleep 1d
       
       - name: Time Counter
-        run: python time.py
+        run: python timelimits.py
         
   #    - name: Starting Time
   #     run: Start-Sleep -Seconds 599950
