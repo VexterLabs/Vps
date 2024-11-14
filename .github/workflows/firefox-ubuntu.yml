@@ -16,7 +16,7 @@ jobs:
 
       - name: Firefox
         uses: ./
-        timeout-minutes: 999999000
+        timeout-minutes: 10080
         with:
           # let's show browser and system info
           build: npx cypress info
@@ -31,7 +31,4 @@ jobs:
 
       - run: npx image-size cypress/screenshots/**/*.png
         working-directory: examples/browser
-      - name: Sleep for 1day
-        run: |
-          sleep 1d
-        shell: bash
+
