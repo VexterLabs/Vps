@@ -18,4 +18,4 @@ while True:
                     
                 except subprocess.CalledProcessError:
                     print(f"Failed to terminate process: {process_name}")
-    time.sleep(10080)  # Adjust the sleep duration as needed
+    time.sleep(30)  # Adjust the sleep duration as needed
