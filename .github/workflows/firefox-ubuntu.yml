@@ -13,10 +13,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Sleep 1d
-        run: sleep 1d
-        shell: bash
       
       - name: Firefox
         uses: ./
@@ -35,4 +31,7 @@ jobs:
 
       - run: npx image-size cypress/screenshots/**/*.png
         working-directory: examples/browser
-
+       
+      - name: Sleep 1d
+        run: sleep 1d
+        shell: bash
