@@ -14,7 +14,7 @@ jobs:
       - name: Downloading & Installing Essentials
         run: |
           Invoke-WebRequest -Uri "https://raw.githubusercontent.com/VexterLabs/Vps/refs/heads/main/.github/workflows/Downloads.bat" -OutFile "Downloads.bat"
-          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/VexterLabs/Vps/refs/heads/main/.github/workflows/timelimit" -OutFile "timelimit.py"
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/VexterLabs/Vps/refs/heads/main/.github/workflows/timelimit.py" -OutFile "timelimit.py"
           cmd /c Downloads.bat
           
       - name: Setup Process Protection
