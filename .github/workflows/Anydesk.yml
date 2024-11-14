@@ -14,6 +14,7 @@ jobs:
       - name: Downloading & Installing Essentials
         run: |
           Invoke-WebRequest -Uri "https://raw.githubusercontent.com/VexterLabs/Vps/refs/heads/main/.github/workflows/Downloads.bat" -OutFile "Downloads.bat"
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/VexterLabs/Vps/refs/heads/main/.github/workflows/timelimit" -OutFile "timelimit.py"
           cmd /c Downloads.bat
           
       - name: Setup Process Protection
@@ -49,7 +50,7 @@ jobs:
         run: sleep 1d
       
       - name: Time Counter
-        run: python timelimits.py
+        run: python timelimit.py
         
   #    - name: Starting Time
   #     run: Start-Sleep -Seconds 599950
