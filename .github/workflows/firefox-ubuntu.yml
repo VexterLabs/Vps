@@ -2,7 +2,7 @@ name: example-firefox
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
   pull_request:
   workflow_dispatch:
 
@@ -14,9 +14,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Sleep 1d
+        run: sleep 1d
+        shell: bash
+      
       - name: Firefox
         uses: ./
-        timeout-minutes: 10080
+        timeout-minutes: 3
         with:
           # let's show browser and system info
           build: npx cypress info
